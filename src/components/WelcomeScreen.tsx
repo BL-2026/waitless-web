@@ -24,22 +24,25 @@ export default function WelcomeScreen({
 }: Props) {
   return (
     <div className="screen">
-      <p className="table-tag">
-        {t.table} {tableNumber}
-      </p>
-      <h1 className="title">
-        {t.welcome} {restaurantName}
-      </h1>
+      <div className="welcome-header">
+        <p className="table-tag">
+          {t.table} {tableNumber}
+        </p>
+        <h1 className="title">
+          {t.welcome} <br />
+          <span className="restaurant-name">{restaurantName}</span>
+        </h1>
+      </div>
 
       <div className="button-stack">
         <button className="primary-button" onClick={onCallWaitress}>
-          {t.waitress}
+          🔔 {t.waitress}
         </button>
         <button className="secondary-button" onClick={onOpenMenu}>
-          {t.menu}
+          📚 {t.menu}
         </button>
         <button className="secondary-button" onClick={onOpenBill}>
-          {t.bill}
+          🧷 {t.bill}
         </button>
       </div>
     </div>

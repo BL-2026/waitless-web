@@ -14,13 +14,13 @@ export default function BillModal({ t, onChoose, onCancel }: Props) {
   return (
     <div className="overlay" onClick={onCancel}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <p className="modal-title">{t.howToPay}</p>
+        <p className="modal-title">💳 {t.howToPay}</p>
         <div className="modal-buttons">
           <button className="primary-button" onClick={() => onChoose("card")}>
-            {t.card}
+            📄 {t.card}
           </button>
           <button className="primary-button" onClick={() => onChoose("cash")}>
-            {t.cash}
+            💵 {t.cash}
           </button>
         </div>
         <button className="cancel-link" onClick={onCancel}>

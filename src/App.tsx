@@ -42,7 +42,14 @@ function CustomerFlow() {
   }
 
   if (loading || !table) {
-    return <div className="screen">Loading…</div>;
+    return (
+      <div className="screen screen-center">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <div className="loading-text">Loading…</div>
+        </div>
+      </div>
+    );
   }
 
   async function handleCallWaitress() {
