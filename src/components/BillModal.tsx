@@ -1,29 +1,33 @@
 import type { Strings } from "../translations/translations";
 import type { PaymentMethod } from "../types";
+import { CardIcon, CashIcon } from "./Icons";
 
 interface Props {
   t: Strings;
-  // Because onChoose only accepts "card" | "cash" (via PaymentMethod),
-  // TypeScript would reject a call like onChoose("bitcoin") at the
-  // call site — this is the kind of bug TS catches before you run anything.
   onChoose: (method: PaymentMethod) => void;
   onCancel: () => void;
+  busy?: boolean;
 }
 
-export default function BillModal({ t, onChoose, onCancel }: Props) {
+export default function BillModal({ t, onChoose, onCancel, busy = false }: Props) {
   return (
-    <div className="overlay" onClick={onCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <p className="modal-title">💳 {t.howToPay}</p>
+    <div className="overlay" onClick={onCancel} role="presentation">
+      <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-labelledby="bill-title">
+        <p id="bill-title" className="modal-title">
+          {t.howToPay}
+        </p>
+        <p className="modal-hint">{t.howToPayHint}</p>
         <div className="modal-buttons">
-          <button className="primary-button" onClick={() => onChoose("card")}>
-            📄 {t.card}
+          <button className="pay-option" onClick={() => onChoose("card")} disabled={busy}>
+            <CardIcon />
+            <span>{t.card}</span>
           </button>
-          <button className="primary-button" onClick={() => onChoose("cash")}>
-            💵 {t.cash}
+          <button className="pay-option" onClick={() => onChoose("cash")} disabled={busy}>
+            <CashIcon />
+            <span>{t.cash}</span>
           </button>
         </div>
-        <button className="cancel-link" onClick={onCancel}>
+        <button className="text-button cancel-link" onClick={onCancel}>
           {t.cancel}
         </button>
       </div>

@@ -8,90 +8,133 @@ import type {
 const MOCK_TABLES: Record<LanguageCode, Table> = {
   en: {
     tableNumber: 7,
-    restaurant: { name: "Cafe Meridian" },
+    zone: "Terrace",
+    restaurant: { name: "Maison Atlas" },
     menu: [
       {
         category: "Coffee",
         items: [
-          { name: "Flat white", desc: "Double shot, steamed milk", price: "4.50" },
-          { name: "Pour over", desc: "Single origin, rotating", price: "5.00" },
+          { name: "Espresso", desc: "Single origin, roasted in Casablanca", price: "18" },
+          { name: "Café crème", desc: "Double shot, steamed milk", price: "28" },
+          { name: "Mint tea", desc: "Gunpowder, fresh nana mint", price: "22" },
         ],
       },
       {
-        category: "Bakery",
-        items: [{ name: "Almond croissant", desc: "Baked daily", price: "4.25" }],
+        category: "Breakfast",
+        items: [
+          { name: "Msmen & honey", desc: "Warm layered pancake, Amlou, thyme honey", price: "45" },
+          { name: "Atlas bowl", desc: "Yogurt, orange blossom, almonds, dates", price: "52" },
+        ],
+      },
+      {
+        category: "Kitchen",
+        items: [
+          { name: "Chicken pastilla", desc: "Crisp warqa, cinnamon, toasted almonds", price: "95" },
+          { name: "Lamb tagine", desc: "Prunes, sesame, slow-cooked in clay", price: "120" },
+          { name: "Sea bass chermoula", desc: "Charred vegetables, preserved lemon", price: "135" },
+        ],
       },
     ],
   },
   fr: {
     tableNumber: 7,
-    restaurant: { name: "Café Meridian" },
+    zone: "Terrasse",
+    restaurant: { name: "Maison Atlas" },
     menu: [
       {
         category: "Café",
         items: [
-          { name: "Flat white", desc: "Double shot, lait vapoté", price: "4.50" },
-          { name: "Filtre", desc: "Origine unique, rotation", price: "5.00" },
+          { name: "Espresso", desc: "Origine unique, torréfié à Casablanca", price: "18" },
+          { name: "Café crème", desc: "Double shot, lait vapeur", price: "28" },
+          { name: "Thé à la menthe", desc: "Gunpowder, nana fraîche", price: "22" },
         ],
       },
       {
-        category: "Boulangerie",
-        items: [{ name: "Croissant aux amandes", desc: "Cuit chaque jour", price: "4.25" }],
+        category: "Petit-déjeuner",
+        items: [
+          { name: "Msemen & miel", desc: "Feuilleté chaud, amlou, miel de thym", price: "45" },
+          { name: "Bol Atlas", desc: "Yaourt, fleur d’oranger, amandes, dattes", price: "52" },
+        ],
+      },
+      {
+        category: "Cuisine",
+        items: [
+          { name: "Pastilla au poulet", desc: "Warqa croustillante, cannelle, amandes", price: "95" },
+          { name: "Tajine d’agneau", desc: "Pruneaux, sésame, cuit à l’étouffée", price: "120" },
+          { name: "Bar en chermoula", desc: "Légumes grillés, citron confit", price: "135" },
+        ],
       },
     ],
   },
   es: {
     tableNumber: 7,
-    restaurant: { name: "Café Meridian" },
+    zone: "Terraza",
+    restaurant: { name: "Maison Atlas" },
     menu: [
       {
         category: "Café",
         items: [
-          { name: "Flat white", desc: "Doble espresso, leche vaporizada", price: "4.50" },
-          { name: "Filtrado", desc: "Un solo origen, rotativo", price: "5.00" },
+          { name: "Espresso", desc: "Origen único, tostado en Casablanca", price: "18" },
+          { name: "Café crème", desc: "Doble espresso, leche vaporizada", price: "28" },
+          { name: "Té de menta", desc: "Gunpowder, hierbabuena fresca", price: "22" },
         ],
       },
       {
-        category: "Panadería",
-        items: [{ name: "Croissant de almendra", desc: "Horneado cada día", price: "4.25" }],
+        category: "Desayuno",
+        items: [
+          { name: "Msemen y miel", desc: "Panqueque hojaldrado, amlou, miel de tomillo", price: "45" },
+          { name: "Bol Atlas", desc: "Yogur, azahar, almendras, dátiles", price: "52" },
+        ],
+      },
+      {
+        category: "Cocina",
+        items: [
+          { name: "Pastela de pollo", desc: "Warqa crujiente, canela, almendras", price: "95" },
+          { name: "Tajine de cordero", desc: "Ciruelas, sésamo, cocción lenta", price: "120" },
+          { name: "Lubina chermoula", desc: "Verduras asadas, limón en conserva", price: "135" },
+        ],
       },
     ],
   },
   ar: {
     tableNumber: 7,
-    restaurant: { name: "كافيه ميريديان" },
+    zone: "التراس",
+    restaurant: { name: "ميزون أطلس" },
     menu: [
       {
         category: "القهوة",
         items: [
-          { name: "فلات وايت", desc: "مزدوج، حليب مبخر", price: "4.50" },
-          { name: "قهوة مصفاة", desc: "أصل واحد، متنوع", price: "5.00" },
+          { name: "إسبريسو", desc: "أصل واحد، محمّص في الدار البيضاء", price: "18" },
+          { name: "كافيه كريم", desc: "جرعتان، حليب مبخّر", price: "28" },
+          { name: "شاي بالنعناع", desc: "شاي أخضر ونعناع طازج", price: "22" },
         ],
       },
       {
-        category: "المخبوزات",
-        items: [{ name: "كرواسون اللوز", desc: "مخبوز يوميًا", price: "4.25" }],
+        category: "الفطور",
+        items: [
+          { name: "مسمن وعسل", desc: "مسمن دافئ، أملو، عسل الزعتر", price: "45" },
+          { name: "صحن أطلس", desc: "زبادي، زهر البرتقال، لوز وتمور", price: "52" },
+        ],
+      },
+      {
+        category: "المطبخ",
+        items: [
+          { name: "بسطيلة الدجاج", desc: "ورقة مقرمشة، قرفة ولوز", price: "95" },
+          { name: "طاجين لحم", desc: "برقوق، سمسم، طهي بطيء", price: "120" },
+          { name: "قاروص بالشرمولة", desc: "خضار مشوية وليمون مخلل", price: "135" },
+        ],
       },
     ],
   },
 };
 
-// The return type Promise<Table> is a promise: this documents the shape
-// of data every caller will get back, matching what Spring will
-// eventually return as JSON from GET /api/tables/{tableToken}.
 export async function fetchTable(
   _tableToken: string,
   language: LanguageCode = "en"
 ): Promise<Table> {
-  // const res = await fetch(`/api/tables/${_tableToken}?lang=${language}`);
-  // if (!res.ok) throw new Error("Failed to load table");
-  // return res.json();
   return Promise.resolve(MOCK_TABLES[language]);
 }
 
-// An interface for the request payload keeps createRequest's signature
-// readable, and paymentMethod being optional (the "?") mirrors reality:
-// it's only present for REQUEST_BILL, not CALL_WAITER.
 export interface CreateRequestPayload {
   tableNumber: number;
   type: RequestTypeValue;
@@ -101,13 +144,6 @@ export interface CreateRequestPayload {
 export async function createRequest(
   payload: CreateRequestPayload
 ): Promise<{ ok: boolean }> {
-  // const res = await fetch("/api/requests", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(payload),
-  // });
-  // if (!res.ok) throw new Error("Failed to send request");
-  // return res.json();
   console.log("Request sent:", payload);
   return Promise.resolve({ ok: true });
 }

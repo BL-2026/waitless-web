@@ -24,14 +24,11 @@ export default function App() {
 
 function CustomerFlow() {
   const { language, setLanguage, t } = useLanguage();
-  const { table, loading } = useTable(TABLE_TOKEN, language ?? "en");
-
-  // useState<Screen> restricts this variable to only the four strings
-  // defined in the Screen type (types.ts) — setScreen("oops-typo") would
-  // fail to compile.
+  const { table, loading } = useTable(TABLE_TOKEN, language ?? "fr");
   const [screen, setScreen] = useState<Screen>("welcome");
-  const [showBillModal, setShowBillModal] = useState<boolean>(false);
+  const [showBillModal, setShowBillModal] = useState(false);
   const [billMethod, setBillMethod] = useState<PaymentMethod | null>(null);
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     applyTheme(APP_THEME);
@@ -43,67 +40,70 @@ function CustomerFlow() {
 
   if (loading || !table) {
     return (
-      <div className="screen screen-center">
+      <div className="app-shell">
         <div className="loading-spinner">
-          <div className="spinner"></div>
-          <div className="loading-text">Loading…</div>
+          <div className="spinner" />
+          <div className="loading-text">{t.loading}</div>
         </div>
       </div>
     );
   }
 
   async function handleCallWaitress() {
-    if (!table) return;
-
+    if (!table || busy) return;
+    setBusy(true);
     await createRequest({
       tableNumber: table.tableNumber,
       type: RequestType.CALL_WAITER,
     });
+    setBusy(false);
     setScreen("waitress-sent");
   }
 
   async function handleBillChoice(method: PaymentMethod) {
-    if (!table) return;
-
+    if (!table || busy) return;
+    setBusy(true);
     setBillMethod(method);
     await createRequest({
       tableNumber: table.tableNumber,
       type: RequestType.REQUEST_BILL,
       paymentMethod: method,
     });
+    setBusy(false);
     setShowBillModal(false);
     setScreen("bill-sent");
   }
 
   return (
-    <>
-      {language && (
-        <div className="top-bar">
-          <label className="language-switcher" htmlFor="language-switcher">
-            <span>Language</span>
-            <select
-              id="language-switcher"
-              value={language}
-              onChange={(event) => setLanguage(event.target.value as LanguageCode)}
-            >
-              {LANGUAGES.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  {lang.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      )}
+    <div className="app-shell">
+      <div className="top-bar">
+        <span className="brand-mark">{t.brand}</span>
+        <label className="language-switcher" htmlFor="language-switcher">
+          <select
+            id="language-switcher"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as LanguageCode)}
+            aria-label="Language"
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.native}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       {screen === "welcome" && (
         <WelcomeScreen
           t={t}
           tableNumber={table.tableNumber}
+          zone={table.zone}
           restaurantName={table.restaurant.name}
           onCallWaitress={handleCallWaitress}
           onOpenMenu={() => setScreen("menu")}
           onOpenBill={() => setShowBillModal(true)}
+          busy={busy}
         />
       )}
 
@@ -135,12 +135,8 @@ function CustomerFlow() {
       )}
 
       {showBillModal && (
-        <BillModal
-          t={t}
-          onChoose={handleBillChoice}
-          onCancel={() => setShowBillModal(false)}
-        />
+        <BillModal t={t} onChoose={handleBillChoice} onCancel={() => setShowBillModal(false)} busy={busy} />
       )}
-    </>
+    </div>
   );
 }

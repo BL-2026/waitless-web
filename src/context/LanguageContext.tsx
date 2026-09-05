@@ -1,25 +1,37 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { STRINGS, type Strings } from "../translations/translations";
 import type { LanguageCode } from "../types";
 
-// This interface is the contract: anything reading this context is
-// guaranteed to get exactly these three fields, with these types.
+const STORAGE_KEY = "waitless-language";
+
 interface LanguageContextValue {
   language: LanguageCode | null;
   setLanguage: (lang: LanguageCode) => void;
   t: Strings | null;
 }
 
-// The generic <LanguageContextValue | null> tells createContext what
-// shape the value will eventually be, even though it starts as null
-// before any Provider sets it.
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-// "ReactNode" is TypeScript's built-in type for "anything React can
-// render" — text, elements, lists of elements, etc. It's the correct
-// type for a "children" prop.
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "en" || value === "fr" || value === "es" || value === "ar";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<LanguageCode | null>(null);
+  const [language, setLanguageState] = useState<LanguageCode | null>(() => {
+    if (typeof window === "undefined") return null;
+    const stored = window.sessionStorage.getItem(STORAGE_KEY);
+    return isLanguageCode(stored) ? stored : null;
+  });
+
+  useEffect(() => {
+    document.documentElement.lang = language ?? "en";
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  }, [language]);
+
+  function setLanguage(lang: LanguageCode) {
+    window.sessionStorage.setItem(STORAGE_KEY, lang);
+    setLanguageState(lang);
+  }
 
   const value: LanguageContextValue = {
     language,

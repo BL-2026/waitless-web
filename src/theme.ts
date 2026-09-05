@@ -1,47 +1,31 @@
-export type ThemeName = "default" | "forest";
+export type ThemeName = "atlas";
 
 export interface ThemeConfig {
   label: string;
   vars: Record<string, string>;
 }
 
-export const APP_THEME: ThemeName = "forest";
+export const APP_THEME: ThemeName = "atlas";
 
 export const THEMES: Record<ThemeName, ThemeConfig> = {
-  default: {
-    label: "Classic",
+  atlas: {
+    label: "Atlas",
     vars: {
-      "--page-bg": "#f4efe2",
-      "--screen-bg": "#f4efe2",
-      "--panel-bg": "#f7f2e8",
-      "--text": "#20211d",
-      "--muted": "#8a8779",
-      "--border": "#e2dccb",
-      "--primary": "#20211d",
-      "--primary-text": "#f4efe2",
-      "--secondary": "#ffffff",
-      "--accent": "#a5432b",
-      "--success": "#2f6b5e",
-      "--overlay": "rgba(0, 0, 0, 0.45)",
-      "--shadow": "rgba(16, 18, 16, 0.12)",
-    },
-  },
-  forest: {
-    label: "Forest",
-    vars: {
-      "--page-bg": "#edf5ee",
-      "--screen-bg": "#f4faf5",
-      "--panel-bg": "#f0f8f2",
-      "--text": "#17342b",
-      "--muted": "#587163",
-      "--border": "#cfe1d4",
-      "--primary": "#2f6b5e",
-      "--primary-text": "#f4fff8",
-      "--secondary": "#eaf5ef",
-      "--accent": "#9d6b3d",
-      "--success": "#3d7d58",
-      "--overlay": "rgba(15, 32, 24, 0.45)",
-      "--shadow": "rgba(25, 66, 47, 0.12)",
+      "--page-bg": "#f3eee6",
+      "--screen-bg": "#f7f3ec",
+      "--panel-bg": "#fffaf4",
+      "--text": "#1c1814",
+      "--muted": "#7a7268",
+      "--border": "#e4dcd0",
+      "--primary": "#1c1814",
+      "--primary-text": "#f7f3ec",
+      "--secondary": "#fffaf4",
+      "--accent": "#9a7048",
+      "--gold": "#b0895a",
+      "--gold-soft": "rgba(176, 137, 90, 0.14)",
+      "--success": "#3f6b58",
+      "--overlay": "rgba(18, 15, 12, 0.48)",
+      "--shadow": "rgba(40, 28, 16, 0.1)",
     },
   },
 };
