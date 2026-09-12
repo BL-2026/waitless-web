@@ -1,149 +1,130 @@
 import type {
-  Table,
-  RequestTypeValue,
+  MenuSection,
   PaymentMethod,
-  LanguageCode,
+  RequestTypeValue,
+  Table,
 } from "../types";
 
-const MOCK_TABLES: Record<LanguageCode, Table> = {
-  en: {
-    tableNumber: 7,
-    zone: "Terrace",
-    restaurant: { name: "Maison Atlas" },
-    menu: [
-      {
-        category: "Coffee",
-        items: [
-          { name: "Espresso", desc: "Single origin, roasted in Casablanca", price: "18" },
-          { name: "Café crème", desc: "Double shot, steamed milk", price: "28" },
-          { name: "Mint tea", desc: "Gunpowder, fresh nana mint", price: "22" },
-        ],
-      },
-      {
-        category: "Breakfast",
-        items: [
-          { name: "Msmen & honey", desc: "Warm layered pancake, Amlou, thyme honey", price: "45" },
-          { name: "Atlas bowl", desc: "Yogurt, orange blossom, almonds, dates", price: "52" },
-        ],
-      },
-      {
-        category: "Kitchen",
-        items: [
-          { name: "Chicken pastilla", desc: "Crisp warqa, cinnamon, toasted almonds", price: "95" },
-          { name: "Lamb tagine", desc: "Prunes, sesame, slow-cooked in clay", price: "120" },
-          { name: "Sea bass chermoula", desc: "Charred vegetables, preserved lemon", price: "135" },
-        ],
-      },
-    ],
-  },
-  fr: {
-    tableNumber: 7,
-    zone: "Terrasse",
-    restaurant: { name: "Maison Atlas" },
-    menu: [
-      {
-        category: "Café",
-        items: [
-          { name: "Espresso", desc: "Origine unique, torréfié à Casablanca", price: "18" },
-          { name: "Café crème", desc: "Double shot, lait vapeur", price: "28" },
-          { name: "Thé à la menthe", desc: "Gunpowder, nana fraîche", price: "22" },
-        ],
-      },
-      {
-        category: "Petit-déjeuner",
-        items: [
-          { name: "Msemen & miel", desc: "Feuilleté chaud, amlou, miel de thym", price: "45" },
-          { name: "Bol Atlas", desc: "Yaourt, fleur d’oranger, amandes, dattes", price: "52" },
-        ],
-      },
-      {
-        category: "Cuisine",
-        items: [
-          { name: "Pastilla au poulet", desc: "Warqa croustillante, cannelle, amandes", price: "95" },
-          { name: "Tajine d’agneau", desc: "Pruneaux, sésame, cuit à l’étouffée", price: "120" },
-          { name: "Bar en chermoula", desc: "Légumes grillés, citron confit", price: "135" },
-        ],
-      },
-    ],
-  },
-  es: {
-    tableNumber: 7,
-    zone: "Terraza",
-    restaurant: { name: "Maison Atlas" },
-    menu: [
-      {
-        category: "Café",
-        items: [
-          { name: "Espresso", desc: "Origen único, tostado en Casablanca", price: "18" },
-          { name: "Café crème", desc: "Doble espresso, leche vaporizada", price: "28" },
-          { name: "Té de menta", desc: "Gunpowder, hierbabuena fresca", price: "22" },
-        ],
-      },
-      {
-        category: "Desayuno",
-        items: [
-          { name: "Msemen y miel", desc: "Panqueque hojaldrado, amlou, miel de tomillo", price: "45" },
-          { name: "Bol Atlas", desc: "Yogur, azahar, almendras, dátiles", price: "52" },
-        ],
-      },
-      {
-        category: "Cocina",
-        items: [
-          { name: "Pastela de pollo", desc: "Warqa crujiente, canela, almendras", price: "95" },
-          { name: "Tajine de cordero", desc: "Ciruelas, sésamo, cocción lenta", price: "120" },
-          { name: "Lubina chermoula", desc: "Verduras asadas, limón en conserva", price: "135" },
-        ],
-      },
-    ],
-  },
-  ar: {
-    tableNumber: 7,
-    zone: "التراس",
-    restaurant: { name: "ميزون أطلس" },
-    menu: [
-      {
-        category: "القهوة",
-        items: [
-          { name: "إسبريسو", desc: "أصل واحد، محمّص في الدار البيضاء", price: "18" },
-          { name: "كافيه كريم", desc: "جرعتان، حليب مبخّر", price: "28" },
-          { name: "شاي بالنعناع", desc: "شاي أخضر ونعناع طازج", price: "22" },
-        ],
-      },
-      {
-        category: "الفطور",
-        items: [
-          { name: "مسمن وعسل", desc: "مسمن دافئ، أملو، عسل الزعتر", price: "45" },
-          { name: "صحن أطلس", desc: "زبادي، زهر البرتقال، لوز وتمور", price: "52" },
-        ],
-      },
-      {
-        category: "المطبخ",
-        items: [
-          { name: "بسطيلة الدجاج", desc: "ورقة مقرمشة، قرفة ولوز", price: "95" },
-          { name: "طاجين لحم", desc: "برقوق، سمسم، طهي بطيء", price: "120" },
-          { name: "قاروص بالشرمولة", desc: "خضار مشوية وليمون مخلل", price: "135" },
-        ],
-      },
-    ],
-  },
-};
+/// Override per environment, e.g. VITE_API_BASE_URL=http://192.168.1.20:8081
+/// when a phone on the same network scans the QR code.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8081";
 
-export async function fetchTable(
-  _tableToken: string,
-  language: LanguageCode = "en"
-): Promise<Table> {
-  return Promise.resolve(MOCK_TABLES[language]);
+/** Shape of the backend's `TableResolutionResponse`. */
+interface TableResolution {
+  table: { id: string; tableNumber: number; zone: string | null };
+  store: { id: string; name: string };
+  menu: {
+    id: string;
+    category: string;
+    name: string;
+    description: string | null;
+    price: number;
+  }[];
+}
+
+export class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+/** The QR code points at `/?t=<qrToken>`; the token is the customer's only credential. */
+export function readTableToken(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("t") ?? params.get("table");
+}
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...init,
+      headers: { "Content-Type": "application/json", ...init?.headers },
+    });
+  } catch {
+    // Backend down, wrong host, no network — status 0 so callers can tell this
+    // apart from a real HTTP error.
+    throw new ApiError("Cannot reach the server", 0);
+  }
+
+  if (!response.ok) {
+    // Errors come back as `ApiError { timestamp, status, error, message }`.
+    let message = response.statusText;
+    try {
+      const body = (await response.json()) as { message?: string };
+      message = body.message ?? message;
+    } catch {
+      // Non-JSON error body; the status text will do.
+    }
+    throw new ApiError(message, response.status);
+  }
+
+  return (await response.json()) as T;
+}
+
+/** `18.00` reads better as `18`, but `120.50` must keep its cents. */
+function formatPrice(price: number): string {
+  return Number.isInteger(price) ? String(price) : price.toFixed(2);
+}
+
+/** The backend returns a flat list ordered by category, the UI wants sections. */
+function groupByCategory(items: TableResolution["menu"]): MenuSection[] {
+  const sections: MenuSection[] = [];
+
+  for (const item of items) {
+    let section = sections.find((candidate) => candidate.category === item.category);
+    if (!section) {
+      section = { category: item.category, items: [] };
+      sections.push(section);
+    }
+    section.items.push({
+      name: item.name,
+      desc: item.description ?? "",
+      price: formatPrice(item.price),
+    });
+  }
+
+  return sections;
+}
+
+export async function fetchTable(qrToken: string): Promise<Table> {
+  const data = await request<TableResolution>(
+    `/api/tables/${encodeURIComponent(qrToken)}`
+  );
+
+  return {
+    tableNumber: data.table.tableNumber,
+    zone: data.table.zone,
+    restaurant: { id: data.store.id, name: data.store.name },
+    menu: groupByCategory(data.menu),
+  };
 }
 
 export interface CreateRequestPayload {
+  storeId: string;
   tableNumber: number;
+  qrToken: string;
   type: RequestTypeValue;
   paymentMethod?: PaymentMethod;
 }
 
-export async function createRequest(
-  payload: CreateRequestPayload
-): Promise<{ ok: boolean }> {
-  console.log("Request sent:", payload);
-  return Promise.resolve({ ok: true });
+export async function createRequest(payload: CreateRequestPayload): Promise<void> {
+  await request("/api/requests", {
+    method: "POST",
+    body: JSON.stringify({
+      // storeId and tableNumber say where we are; qrToken proves it. The server
+      // resolves the token itself and 403s if they disagree.
+      storeId: payload.storeId,
+      tableNumber: payload.tableNumber,
+      qrToken: payload.qrToken,
+      type: payload.type,
+      // The backend enum is upper case. Undefined keys are dropped by stringify,
+      // which matters: it rejects a paymentMethod on a CALL_WAITER request.
+      paymentMethod: payload.paymentMethod?.toUpperCase(),
+    }),
+  });
 }

@@ -4,7 +4,7 @@ import { BellIcon, BillIcon, ChevronIcon, MenuIcon } from "./Icons";
 interface Props {
   t: Strings;
   tableNumber: number;
-  zone: string;
+  zone: string | null;
   restaurantName: string;
   onCallWaitress: () => void;
   onOpenMenu: () => void;
@@ -31,9 +31,11 @@ export default function WelcomeScreen({
           <span className="pill">
             {t.table} {tableNumber}
           </span>
-          <span className="pill pill-quiet">
-            {t.zone} · {zone}
-          </span>
+          {zone && (
+            <span className="pill pill-quiet">
+              {t.zone} · {zone}
+            </span>
+          )}
         </div>
       </header>
 

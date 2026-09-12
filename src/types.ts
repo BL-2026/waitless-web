@@ -21,12 +21,15 @@ export interface MenuSection {
 }
 
 export interface Restaurant {
+  /** Tenant the table belongs to; sent back on every request. */
+  id: string;
   name: string;
 }
 
 export interface Table {
   tableNumber: number;
-  zone: string;
+  /** Null when the table has no zone assigned in the backend. */
+  zone: string | null;
   restaurant: Restaurant;
   menu: MenuSection[];
 }
