@@ -24,11 +24,18 @@ interface TableResolution {
 
 export class ApiError extends Error {
   status: number;
+  /** Stable backend/client code for localization. Prefer this over [message]. */
+  code: string | null;
 
-  constructor(message: string, status: number) {
+  constructor(message: string, status: number, code: string | null = null) {
     super(message);
     this.name = "ApiError";
     this.status = status;
+    this.code = code;
+  }
+
+  get isOffline(): boolean {
+    return this.status === 0 || this.code === "NETWORK_UNREACHABLE";
   }
 }
 
@@ -48,19 +55,21 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   } catch {
     // Backend down, wrong host, no network — status 0 so callers can tell this
     // apart from a real HTTP error.
-    throw new ApiError("Cannot reach the server", 0);
+    throw new ApiError("Cannot reach the server", 0, "NETWORK_UNREACHABLE");
   }
 
   if (!response.ok) {
-    // Errors come back as `ApiError { timestamp, status, error, message }`.
+    // Errors come back as `ApiError { timestamp, status, error, code, message }`.
     let message = response.statusText;
+    let code: string | null = null;
     try {
-      const body = (await response.json()) as { message?: string };
+      const body = (await response.json()) as { message?: string; code?: string };
       message = body.message ?? message;
+      code = body.code ?? null;
     } catch {
       // Non-JSON error body; the status text will do.
     }
-    throw new ApiError(message, response.status);
+    throw new ApiError(message, response.status, code);
   }
 
   return (await response.json()) as T;

@@ -29,9 +29,13 @@ export interface Strings {
   tableNotFoundBody: string;
   offlineTitle: string;
   offlineBody: string;
+  serverErrorTitle: string;
+  serverErrorBody: string;
   retry: string;
   sendFailedTitle: string;
   sendFailedBody: string;
+  sendOfflineTitle: string;
+  sendOfflineBody: string;
 }
 
 export const LANGUAGES: { code: LanguageCode; label: string; native: string }[] = [
@@ -72,11 +76,15 @@ export const STRINGS: Record<LanguageCode, Strings> = {
     currency: "DH",
     tableNotFoundTitle: "We can’t find your table",
     tableNotFoundBody: "Scan the QR code on your table to get started.",
-    offlineTitle: "Connection problem",
-    offlineBody: "We couldn’t reach the restaurant. Please try again.",
+    offlineTitle: "No internet connection",
+    offlineBody: "Check your network and try again.",
+    serverErrorTitle: "Something went wrong",
+    serverErrorBody: "The restaurant could not load your table. Please try again.",
     retry: "Try again",
     sendFailedTitle: "Request not sent",
     sendFailedBody: "Something went wrong on the way. Please try again.",
+    sendOfflineTitle: "No internet connection",
+    sendOfflineBody: "Your request was not sent. Check your network and try again.",
   },
   fr: {
     brand: "Waitless",
@@ -108,11 +116,17 @@ export const STRINGS: Record<LanguageCode, Strings> = {
     currency: "DH",
     tableNotFoundTitle: "Table introuvable",
     tableNotFoundBody: "Scannez le QR code sur votre table pour commencer.",
-    offlineTitle: "Problème de connexion",
-    offlineBody: "Impossible de joindre le restaurant. Veuillez réessayer.",
+    offlineTitle: "Pas de connexion Internet",
+    offlineBody: "Vérifiez votre réseau et réessayez.",
+    serverErrorTitle: "Une erreur est survenue",
+    serverErrorBody:
+      "Le restaurant n’a pas pu charger votre table. Veuillez réessayer.",
     retry: "Réessayer",
     sendFailedTitle: "Demande non envoyée",
     sendFailedBody: "Un problème est survenu. Veuillez réessayer.",
+    sendOfflineTitle: "Pas de connexion Internet",
+    sendOfflineBody:
+      "Votre demande n’a pas été envoyée. Vérifiez votre réseau et réessayez.",
   },
   es: {
     brand: "Waitless",
@@ -144,11 +158,16 @@ export const STRINGS: Record<LanguageCode, Strings> = {
     currency: "DH",
     tableNotFoundTitle: "No encontramos tu mesa",
     tableNotFoundBody: "Escanea el código QR de tu mesa para empezar.",
-    offlineTitle: "Problema de conexión",
-    offlineBody: "No pudimos contactar con el restaurante. Inténtalo de nuevo.",
+    offlineTitle: "Sin conexión a Internet",
+    offlineBody: "Comprueba tu red e inténtalo de nuevo.",
+    serverErrorTitle: "Algo ha salido mal",
+    serverErrorBody: "El restaurante no pudo cargar tu mesa. Inténtalo de nuevo.",
     retry: "Reintentar",
     sendFailedTitle: "Solicitud no enviada",
     sendFailedBody: "Algo ha ido mal. Inténtalo de nuevo.",
+    sendOfflineTitle: "Sin conexión a Internet",
+    sendOfflineBody:
+      "Tu solicitud no se envió. Comprueba tu red e inténtalo de nuevo.",
   },
   ar: {
     brand: "Waitless",
@@ -180,10 +199,14 @@ export const STRINGS: Record<LanguageCode, Strings> = {
     currency: "د.م",
     tableNotFoundTitle: "لم نتمكن من العثور على طاولتك",
     tableNotFoundBody: "امسح رمز QR الموجود على طاولتك للبدء.",
-    offlineTitle: "مشكلة في الاتصال",
-    offlineBody: "لم نتمكن من الوصول إلى المطعم. يرجى المحاولة مرة أخرى.",
+    offlineTitle: "لا يوجد اتصال بالإنترنت",
+    offlineBody: "تحقق من الشبكة وحاول مرة أخرى.",
+    serverErrorTitle: "حدث خطأ ما",
+    serverErrorBody: "تعذر على المطعم تحميل طاولتك. يرجى المحاولة مرة أخرى.",
     retry: "أعد المحاولة",
     sendFailedTitle: "لم يتم إرسال الطلب",
     sendFailedBody: "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    sendOfflineTitle: "لا يوجد اتصال بالإنترنت",
+    sendOfflineBody: "لم يتم إرسال طلبك. تحقق من الشبكة وحاول مرة أخرى.",
   },
 };

@@ -3,11 +3,12 @@ import { ApiError, fetchTable } from "../api/requestService";
 import type { Table } from "../types";
 
 /**
- * `no-token`  — the page was opened directly instead of by scanning a QR code.
- * `not-found` — the token is unknown to the backend (stale or mistyped QR).
- * `offline`   — the backend could not be reached at all.
+ * `no-token`     — the page was opened directly instead of by scanning a QR code.
+ * `not-found`    — the token is unknown to the backend (stale or mistyped QR).
+ * `offline`      — no network / cannot reach the server.
+ * `server-error` — the server answered with an unexpected failure.
  */
-export type TableErrorKind = "no-token" | "not-found" | "offline";
+export type TableErrorKind = "no-token" | "not-found" | "offline" | "server-error";
 
 interface UseTableResult {
   table: Table | null;
@@ -20,6 +21,13 @@ type State =
   | { status: "loading" }
   | { status: "ready"; table: Table }
   | { status: "error"; kind: TableErrorKind };
+
+function kindFromError(cause: unknown): TableErrorKind {
+  if (!(cause instanceof ApiError)) return "server-error";
+  if (cause.isOffline) return "offline";
+  if (cause.status === 404 || cause.code === "NOT_FOUND") return "not-found";
+  return "server-error";
+}
 
 export function useTable(qrToken: string | null): UseTableResult {
   const [state, setState] = useState<State>({ status: "loading" });
@@ -41,13 +49,7 @@ export function useTable(qrToken: string | null): UseTableResult {
       })
       .catch((cause: unknown) => {
         if (cancelled) return;
-        setState({
-          status: "error",
-          kind:
-            cause instanceof ApiError && cause.status === 404
-              ? "not-found"
-              : "offline",
-        });
+        setState({ status: "error", kind: kindFromError(cause) });
       });
 
     return () => {

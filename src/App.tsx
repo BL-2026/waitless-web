@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 import { useTable } from "./hooks/useTable";
-import { createRequest, readTableToken } from "./api/requestService";
+import { createRequest, readTableToken, ApiError } from "./api/requestService";
 import { RequestType, type Screen, type PaymentMethod, type LanguageCode } from "./types";
 import LanguageSelect from "./components/LanguageSelect";
 import WelcomeScreen from "./components/WelcomeScreen";
@@ -31,6 +31,7 @@ function CustomerFlow() {
   const [billMethod, setBillMethod] = useState<PaymentMethod | null>(null);
   const [busy, setBusy] = useState(false);
   const [sendFailed, setSendFailed] = useState(false);
+  const [sendOffline, setSendOffline] = useState(false);
 
   useEffect(() => {
     applyTheme(APP_THEME);
@@ -41,18 +42,28 @@ function CustomerFlow() {
   }
 
   if (error) {
+    const offline = error === "offline";
+    const server = error === "server-error";
     return (
       <div className="app-shell">
-        {error === "offline" ? (
-          <ErrorScreen
-            title={t.offlineTitle}
-            body={t.offlineBody}
-            actionLabel={t.retry}
-            onAction={retry}
-          />
-        ) : (
-          <ErrorScreen title={t.tableNotFoundTitle} body={t.tableNotFoundBody} />
-        )}
+        <ErrorScreen
+          title={
+            offline
+              ? t.offlineTitle
+              : server
+                ? t.serverErrorTitle
+                : t.tableNotFoundTitle
+          }
+          body={
+            offline
+              ? t.offlineBody
+              : server
+                ? t.serverErrorBody
+                : t.tableNotFoundBody
+          }
+          actionLabel={offline || server ? t.retry : undefined}
+          onAction={offline || server ? retry : undefined}
+        />
       </div>
     );
   }
@@ -80,8 +91,10 @@ function CustomerFlow() {
         paymentMethod,
       });
       return true;
-    } catch {
+    } catch (cause) {
       // Never show a confirmation for a request the kitchen never received.
+      const offline = cause instanceof ApiError && cause.isOffline;
+      setSendOffline(offline);
       setSendFailed(true);
       return false;
     } finally {
@@ -105,6 +118,7 @@ function CustomerFlow() {
 
   function backToTable() {
     setSendFailed(false);
+    setSendOffline(false);
     setShowBillModal(false);
     setScreen("welcome");
   }
@@ -131,8 +145,8 @@ function CustomerFlow() {
 
       {sendFailed ? (
         <ErrorScreen
-          title={t.sendFailedTitle}
-          body={t.sendFailedBody}
+          title={sendOffline ? t.sendOfflineTitle : t.sendFailedTitle}
+          body={sendOffline ? t.sendOfflineBody : t.sendFailedBody}
           actionLabel={t.back}
           onAction={backToTable}
         />
