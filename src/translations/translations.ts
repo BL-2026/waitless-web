@@ -47,7 +47,7 @@ export const LANGUAGES: { code: LanguageCode; label: string; native: string }[] 
 
 export const STRINGS: Record<LanguageCode, Strings> = {
   en: {
-    brand: "Waitless",
+    brand: "Floorcall",
     chooseLanguage: "Choose your language",
     chooseLanguageHint: "Your table experience, in your language.",
     welcome: "Welcome",
@@ -87,7 +87,7 @@ export const STRINGS: Record<LanguageCode, Strings> = {
     sendOfflineBody: "Your request was not sent. Check your network and try again.",
   },
   fr: {
-    brand: "Waitless",
+    brand: "Floorcall",
     chooseLanguage: "Choisissez votre langue",
     chooseLanguageHint: "Votre expérience à table, dans votre langue.",
     welcome: "Bienvenue",
@@ -129,7 +129,7 @@ export const STRINGS: Record<LanguageCode, Strings> = {
       "Votre demande n’a pas été envoyée. Vérifiez votre réseau et réessayez.",
   },
   es: {
-    brand: "Waitless",
+    brand: "Floorcall",
     chooseLanguage: "Elige tu idioma",
     chooseLanguageHint: "Tu experiencia en mesa, en tu idioma.",
     welcome: "Bienvenido",
@@ -170,7 +170,7 @@ export const STRINGS: Record<LanguageCode, Strings> = {
       "Tu solicitud no se envió. Comprueba tu red e inténtalo de nuevo.",
   },
   ar: {
-    brand: "Waitless",
+    brand: "Floorcall",
     chooseLanguage: "اختر لغتك",
     chooseLanguageHint: "تجربتك على الطاولة، بلغتك.",
     welcome: "مرحباً",

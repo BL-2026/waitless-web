@@ -7,7 +7,7 @@ import type {
 
 /// Override per environment, e.g. VITE_API_BASE_URL=http://192.168.1.20:8081
 /// when a phone on the same network scans the QR code.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8081";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 /** Shape of the backend's `TableResolutionResponse`. */
 interface TableResolution {
